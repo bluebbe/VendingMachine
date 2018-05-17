@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace VendingMachineAPI.Data
+namespace VendingMachineAPI.Models
 {
     public class Change
     {
@@ -13,7 +13,7 @@ namespace VendingMachineAPI.Data
         private int pennies;
        
         
-        Change(int penniesIn)
+        public Change(int penniesIn)
         {
             quarters = (penniesIn / 25);
             penniesIn %= 25;
