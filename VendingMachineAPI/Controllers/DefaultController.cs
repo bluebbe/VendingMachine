@@ -7,9 +7,11 @@ using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http.Cors;
+using System.Web.Http.Results;
 using VendingMachineAPI.Data.Factories;
 using VendingMachineAPI.Data.Model;
 using VendingMachineAPI.Models;
+using System.Net.Http.Formatting;
 
 namespace VendingMachineAPI.Controllers
 {
@@ -35,12 +37,17 @@ namespace VendingMachineAPI.Controllers
             Item item = repo.getItemById(id);
             if (item.Quantity < 1)
             {
-                throw new NotImplementedException();
+
+                return new VendingMachineAPI.Models.MessageResult("{ \"message\" : \"SOLD OUT!!!\" }",Request);
+
             }
 
-            if(money.CompareTo(item.Price) < 0)
+            if (money.CompareTo(item.Price) < 0)
             {
-                throw new NotImplementedException();
+                decimal diff = item.Price - money;
+                var msg = "{ \"message\" : \"Please deposit: $" + diff + " \" }";
+                return new VendingMachineAPI.Models.MessageResult(msg, Request);
+
             }
 
             item.Quantity = item.Quantity - 1;
