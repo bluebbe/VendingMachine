@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using VendingMachineAPI.Data.Interfaces;
 using VendingMachineAPI.Data.MockRepository;
+using VendingMachineAPI.Data.ADO;
 
 namespace VendingMachineAPI.Data.Factories
 {
@@ -15,6 +16,8 @@ namespace VendingMachineAPI.Data.Factories
             {
                 case "MEMORY":
                     return new VendingMachineMockRepository();
+                case "ADO":
+                    return new VendingMachineADORepository();
                 default: throw new Exception("Could not find valid Repository configuration value");
 
             }

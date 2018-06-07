@@ -33,6 +33,7 @@ namespace VendingMachineAPI.Data.MockRepository
         public void deleteItem(int paramInt)
         {
             vendingItems.Remove(getItemById(paramInt));
+           
         }
 
         public IEnumerable<Item> getAllItems()
@@ -52,9 +53,10 @@ namespace VendingMachineAPI.Data.MockRepository
 
         public void updateItem(Item paramItem)
         {
+            
             deleteItem(paramItem.Id);
             vendingItems.Add(paramItem);
-           
+   
         }
     }
 }

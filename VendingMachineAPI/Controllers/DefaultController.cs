@@ -12,17 +12,23 @@ using VendingMachineAPI.Data.Factories;
 using VendingMachineAPI.Data.Model;
 using VendingMachineAPI.Models;
 using System.Net.Http.Formatting;
+using VendingMachineAPI.Data.Interfaces;
 
 namespace VendingMachineAPI.Controllers
 {
-    [EnableCors(origins: "http://localhost", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class DefaultController : ApiController
     {
+
+        private readonly IVendingMachine repo = VendingMachineRepoFactory.GetRepository();
+
+        
+
         [Route("items")]
         [AcceptVerbs("GET")]
         public IHttpActionResult getAllItems()
         {
-            var repo = VendingMachineRepoFactory.GetRepository();
+            
             List<Item> items = repo.getAllItems().ToList();
 
             return Json(items, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
@@ -32,7 +38,7 @@ namespace VendingMachineAPI.Controllers
         [AcceptVerbs("GET")]
         public IHttpActionResult vendItems(decimal money,int id)
         {
-            var repo = VendingMachineRepoFactory.GetRepository();
+           
 
             Item item = repo.getItemById(id);
             if (item.Quantity < 1)
