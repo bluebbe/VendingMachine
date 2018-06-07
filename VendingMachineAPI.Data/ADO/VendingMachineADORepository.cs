@@ -48,7 +48,28 @@ namespace VendingMachineAPI.Data.ADO
 
         public Item getItemById(int paramInt)
         {
-            throw new NotImplementedException();
+            Item item = new Item();
+
+            using (var cn = new SqlConnection(Settings.GetConnectionString()))
+            {
+                SqlCommand cmd = new SqlCommand("GetItemById", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Id", paramInt);
+                cn.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        item.Id = (int)dr["Id"];
+                        item.Name = dr["Name"].ToString();
+                        item.Price = (decimal)dr["Price"];
+                        item.Quantity = (int)dr["Quantity"];
+                    }
+                }
+            }
+
+            return item;
         }
 
         public Item peristItem(Item paramItem)
@@ -58,7 +79,18 @@ namespace VendingMachineAPI.Data.ADO
 
         public void updateItem(Item paramItem)
         {
-            throw new NotImplementedException();
+            using (var cn = new SqlConnection(Settings.GetConnectionString()))
+            {
+                SqlCommand cmd = new SqlCommand("UpdateItem", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Id", paramItem.Id);
+                cmd.Parameters.AddWithValue("@Quantity", paramItem.Quantity);
+                cn.Open();
+
+                cmd.ExecuteNonQuery();
+                
+            }
+            
         }
 
         
